@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Image Labeling Tool</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/style.css') }}"
+        />
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1>Image Labeling Tool</h1>
+            </header>
+
+            <main>
+                <div class="workspace">
+                    <div class="sidebar">
+                        <!-- Sidebar content remains the same -->
+                        <div class="tool-section">
+                            <h3>Tools</h3>
+                            <button id="draw-box-btn" class="btn active">
+                                Draw Box
+                            </button>
+                            <button id="edit-box-btn" class="btn">
+                                Edit Box
+                            </button>
+                        </div>
+
+                        <div class="labels-section">
+                            <h3>Labels</h3>
+                            <div class="label-input">
+                                <input
+                                    type="text"
+                                    id="new-label"
+                                    placeholder="Add new label"
+                                />
+                                <button id="add-label-btn" class="btn">
+                                    Add
+                                </button>
+                            </div>
+                            <div id="labels-list" class="labels-list">
+                                <!-- Labels will be added here dynamically -->
+                            </div>
+                        </div>
+
+                        <div class="annotations-section">
+                            <h3>Annotations</h3>
+                            <div id="annotations-list" class="annotations-list">
+                                <!-- Annotations will be added here dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="canvas-container">
+                        <div class="canvas-tools">
+                            <button id="upload-btn" class="btn">
+                                Upload Images
+                            </button>
+
+                            <input
+                                type="file"
+                                id="image-upload"
+                                accept="image/*"
+                                style="display: none"
+                                multiple
+                            />
+
+                            <div class="navigation-controls">
+                                <button
+                                    id="prev-image-btn"
+                                    class="btn"
+                                    disabled
+                                >
+                                    &lt; Prev
+                                </button>
+                                <span id="image-info">No images loaded</span>
+                                <button
+                                    id="next-image-btn"
+                                    class="btn"
+                                    disabled
+                                >
+                                    Next &gt;
+                                </button>
+                            </div>
+                            <button
+                                id="delete-image-btn"
+                                class="btn btn-danger"
+                                disabled
+                            >
+                                Delete Image
+                            </button>
+
+                            <!-- *** START MODIFICATION *** -->
+                            <div class="save-export-group">
+                                <button id="save-btn" class="btn primary">
+                                    Export JSON
+                                </button>
+                                <button
+                                    id="export-yolo-btn"
+                                    class="btn primary"
+                                >
+                                    Export YOLO
+                                </button>
+                            </div>
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="image-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer>
+                <p>Image Labeling Tool - Laibel</p>
+            </footer>
+        </div>
+
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    </body>
+</html>

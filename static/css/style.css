@@ -1,0 +1,298 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f7fa;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #4a6cf7;
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+    overflow: hidden; /* Prevent main from causing scrollbars due to fixed-height workspace */
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+}
+
+/* Workspace layout */
+.workspace {
+    display: flex;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    /* Adjusted height calculation - might need tweaking based on header/footer/padding */
+    height: calc(
+        100vh - 160px
+    ); /* Example: Adjust based on actual header/footer/main padding heights */
+}
+
+.sidebar {
+    width: 300px;
+    background-color: #f0f2f5;
+    padding: 1.5rem;
+    overflow-y: auto;
+    border-right: 1px solid #e1e4e8;
+    display: flex; /* Use flex for sidebar content */
+    flex-direction: column; /* Stack sections vertically */
+}
+
+.canvas-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden; /* Prevent canvas container from overflowing workspace */
+}
+
+/* --- MODIFIED --- */
+.canvas-tools {
+    padding: 0.75rem 1rem; /* Slightly reduced padding */
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e1e4e8;
+    display: flex;
+    justify-content: space-between; /* Space out items */
+    align-items: center; /* Vertically align items */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 10px; /* Add gap between items/groups */
+}
+
+.canvas-wrapper {
+    flex: 1; /* Take remaining vertical space */
+    overflow: auto; /* Allow scrolling for large canvases */
+    position: relative;
+    background-color: #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Removed max-width/max-height to rely on flexbox */
+}
+
+canvas {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Canvas size is controlled by JS, but set a default display */
+    display: block;
+}
+
+/* Buttons and controls */
+.btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5da; /* Added subtle border */
+    border-radius: 4px;
+    background-color: #e1e4e8;
+    color: #333;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    white-space: nowrap; /* Prevent button text wrapping */
+}
+
+.btn:hover {
+    background-color: #d1d5da;
+    border-color: #adb5bd;
+}
+
+.btn.active {
+    background-color: #4a6cf7;
+    color: white;
+    border-color: #4a6cf7;
+}
+
+.btn.primary {
+    background-color: #4a6cf7;
+    color: white;
+    border-color: #4a6cf7;
+}
+
+.btn.primary:hover {
+    background-color: #3a5ce5;
+    border-color: #3a5ce5;
+}
+
+/* --- NEW: Style disabled buttons --- */
+.btn:disabled {
+    background-color: #e9ecef;
+    color: #adb5bd;
+    cursor: not-allowed;
+    border-color: #dee2e6;
+}
+
+.btn.btn-danger {
+    background-color: #dc3545; /* Bootstrap danger red */
+    color: white;
+    border-color: #dc3545;
+}
+
+.btn.btn-danger:hover {
+    background-color: #c82333; /* Darker red on hover */
+    border-color: #bd2130;
+}
+
+/* Ensure disabled danger buttons also look distinct */
+.btn.btn-danger:disabled {
+    background-color: #f8d7da; /* Lighter red */
+    color: #721c24;
+    border-color: #f5c6cb;
+    cursor: not-allowed;
+}
+
+/* --- NEW: Navigation Controls Styles --- */
+.navigation-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between Prev, Info, Next */
+    /* Removed margin, rely on .canvas-tools gap */
+}
+
+#image-info {
+    font-size: 0.9em;
+    color: #555;
+    min-width: 120px; /* Give it some minimum space */
+    text-align: center;
+    font-weight: 600; /* Make it slightly bolder */
+    background-color: #fff; /* Optional: background for contrast */
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #e1e4e8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Show ellipsis if filename is too long */
+}
+/* --- END NEW STYLES --- */
+
+/* *** START NEW CSS RULE *** */
+/* Group Save and Export buttons */
+.save-export-group {
+    display: flex;
+    gap: 5px; /* Smaller gap between Save and Export */
+}
+/* *** END NEW CSS RULE *** */
+
+/* Tool sections */
+.tool-section,
+.labels-section,
+.annotations-section {
+    margin-bottom: 1.5rem; /* Slightly reduced margin */
+}
+
+h3 {
+    margin-bottom: 0.75rem; /* Slightly reduced margin */
+    color: #4a6cf7;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.label-input {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.label-input input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #e1e4e8;
+    border-radius: 4px 0 0 4px;
+    font-size: 0.9rem;
+    min-width: 0; /* Allow input to shrink */
+}
+
+.label-input button {
+    border-radius: 0 4px 4px 0;
+    border-left: none; /* Prevent double border */
+}
+
+.labels-list,
+.annotations-list {
+    background-color: white;
+    border-radius: 4px;
+    border: 1px solid #e1e4e8;
+    max-height: 200px; /* Keep max-height */
+    overflow-y: auto; /* Keep scroll */
+}
+
+.label-item,
+.annotation-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e1e4e8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px; /* Add gap between items in the list row */
+}
+
+.label-item:last-child,
+.annotation-item:last-child {
+    border-bottom: none;
+}
+
+/* Specific styling for delete buttons in lists */
+.delete-label-btn,
+.delete-annotation-btn {
+    padding: 0.2rem 0.5rem; /* Smaller padding */
+    font-size: 0.8rem;
+    line-height: 1;
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text */
+    border-color: #f5c6cb;
+}
+
+.delete-label-btn:hover,
+.delete-annotation-btn:hover {
+    background-color: #f1b0b7;
+    border-color: #ec9fa8;
+    color: #721c24;
+}
+
+.label-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle; /* Align better with text */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Ensure label name text doesn't overflow weirdly */
+.label-item > div:first-child,
+.annotation-item > select {
+    flex-grow: 1; /* Allow select/label name to take space */
+    min-width: 0; /* Allow shrinking */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Style select dropdown in annotation list */
+.annotation-label-select {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    max-width: 150px; /* Limit width */
+}
