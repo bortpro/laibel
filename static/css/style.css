@@ -1,4 +1,3 @@
-/* --- Base Reset and Variables --- */
 * {
     margin: 0;
     padding: 0;
@@ -31,7 +30,7 @@
 
     --accent-primary: #61afef; /* Primary accent (e.g., blue) */
     --accent-primary-hover: #6abeff;
-    --accent-secondary: #98c379; /* Secondary accent (e.g., green) */
+    --accent-secondary: #98c379; /* Secondary accent (e.g., green for save/export) */
     --accent-secondary-hover: #a5d087;
     --danger-primary: #e06c75; /* Danger/delete (e.g., red) */
     --danger-hover: #ea7f88;
@@ -156,7 +155,7 @@ h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
     gap: calc(var(--spacing-unit) * 0.75);
     box-shadow: var(--shadow-sm); /* Add subtle shadow below tools */
     z-index: 5; /* Keep tools above canvas wrapper */
@@ -179,6 +178,12 @@ canvas {
     max-width: 100%; /* Ensure canvas doesn't overflow wrapper */
     max-height: 100%;
     border-radius: var(--border-radius-sm);
+    transition: opacity 0.3s ease; /* Add transition for AI assist opacity change */
+}
+
+/* Style for when AI assist is running */
+canvas[style*="opacity: 0.7"] {
+    cursor: wait;
 }
 
 /* --- Buttons & Controls --- */
@@ -194,6 +199,9 @@ canvas {
     transition: all 0.2s ease;
     white-space: nowrap;
     line-height: 1.2; /* Ensure consistent height */
+    display: inline-flex; /* Align icon and text if needed */
+    align-items: center;
+    justify-content: center;
 }
 
 .btn:hover:not(:disabled) {
@@ -263,7 +271,8 @@ canvas {
 #image-info {
     font-size: 0.9em;
     color: var(--text-secondary);
-    min-width: 130px;
+    min-width: 150px; /* Allow more space for filename */
+    max-width: 250px; /* Prevent excessive width */
     text-align: center;
     font-weight: 500;
     background-color: var(--bg-primary); /* Match main bg */
@@ -272,7 +281,7 @@ canvas {
     border: 1px solid var(--border-primary);
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis; /* Add ellipsis for long names */
 }
 
 .save-export-group {
@@ -288,7 +297,9 @@ canvas {
 
 /* Style all relevant inputs and selects */
 input[type="text"],
+select, /* Added select here */
 .annotation-label-select {
+    /* Keep specific class for potential overrides */
     flex: 1;
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--border-primary);
@@ -296,10 +307,13 @@ input[type="text"],
     background-color: var(--bg-primary); /* Darker input background */
     color: var(--text-primary);
     font-size: 0.9rem;
-    min-width: 0;
-    transition: border-color 0.2s ease;
+    min-width: 0; /* Prevent flex item overflow */
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease;
 }
 input[type="text"]:focus,
+select:focus, /* Added select here */
 .annotation-label-select:focus {
     outline: none;
     border-color: var(--border-focus);
@@ -379,12 +393,11 @@ input[type="text"]:focus,
 }
 .delete-label-btn:hover,
 .delete-annotation-btn:hover {
-    background-color: rgba(
-        var(--danger-primary),
-        0.1
-    ); /* Subtle red background on hover */
+    background-color: hsla(
+        from var(--danger-primary) h s l / 0.1
+    ); /* Use hsla for alpha */
     color: var(--danger-hover);
-    border-color: rgba(var(--danger-primary), 0.3);
+    border-color: hsla(from var(--danger-primary) h s l / 0.3);
 }
 
 .label-color {
@@ -399,20 +412,35 @@ input[type="text"]:focus,
 }
 
 /* Label name / Select dropdown container */
-.label-item > div:first-child,
-.annotation-item > select {
+.label-item > div:first-child {
+    /* Target the div containing the color span and name */
     flex-grow: 1;
-    min-width: 0;
+    min-width: 0; /* Prevent overflow */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 0.9em;
 }
 
-/* Style select dropdown in annotation list */
-.annotation-label-select {
-    padding: 0.3rem 0.6rem; /* Smaller padding */
-    max-width: 100%; /* Allow it to fill space */
+.annotation-item > select {
+    /* Target the select directly */
+    flex-grow: 1;
+    min-width: 0; /* Prevent overflow */
+    /* Inherits base select styles */
+    padding: 0.3rem 0.6rem; /* Smaller padding for list item */
     font-size: 0.85em;
-    /* Inherits input styles */
+    /* Let flexbox handle width, no need for max-width: 100% typically */
+}
+
+/* Style select dropdown in annotation list (already covered by general select styling) */
+/* .annotation-label-select { } */
+
+/* Style for placeholder text in lists */
+.labels-list p,
+.annotations-list p {
+    color: var(--text-secondary);
+    font-style: italic;
+    padding: var(--spacing-unit);
+    text-align: center;
+    font-size: 0.9em;
 }
