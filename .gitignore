@@ -2,3 +2,5 @@
 CACHEDIR.TAG
 pyvenv.cfg
 lib/python3.8/site-packages/
+bin
+share
